@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        canvas { max-width: 600px; margin: 20px auto; }
+        .download-btn { margin: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Log Dashboard</h1>
+    <p><strong>Total Logs:</strong> 76,591</p>
+    <p><strong>Success:</strong> 66,797 | <strong>Failure:</strong> 3,618 | <strong>Error:</strong> 3</p>
+    <button class="download-btn" onclick="downloadHTML()">Download Dashboard</button>
+    <canvas id="statusChart"></canvas>
+    <canvas id="actionChart"></canvas>
+    
+    <script>
+        function downloadHTML() {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(document.documentElement.outerHTML));
+            element.setAttribute('download', 'log_dashboard.html');
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+        
+        const statusData = {
+            labels: ["Success", "Failure", "Error"],
+            datasets: [{
+                data: [66797, 3618, 3],
+                backgroundColor: ["#28a745", "#dc3545", "#ffc107"]
+            }]
+        };
+        
+        const actionData = {
+            labels: ["Phone Verification", "Download DRS Statement", "Selecting DRS Statement", "PDF Verification", "Success", "Failure", "KYC Page", "Login", "Dashboard Navigation", "Generate DRS Statement Date Selection", "Generate DRS Statement", "Login Step", "Status"],
+            datasets: [{
+                data: [29118, 17212, 11676, 11452, 5679, 494, 403, 262, 131, 72, 60, 29, 3],
+                backgroundColor: ["#007bff", "#6610f2", "#17a2b8", "#ff5733", "#ffbd33", "#33ff57", "#5733ff", "#33bdff", "#ff33bd", "#b8ff33", "#33ffbd", "#ff3380", "#80ff33"]
+            }]
+        };
+        
+        new Chart(document.getElementById("statusChart"), {
+            type: "pie",
+            data: statusData
+        });
+        
+        new Chart(document.getElementById("actionChart"), {
+            type: "doughnut",
+            data: actionData
+        });
+    </script>
+</body>
+</html>
