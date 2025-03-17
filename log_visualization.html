@@ -6,19 +6,91 @@
     <title>Log Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        canvas { max-width: 600px; margin: 20px auto; }
-        .download-btn { margin: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 8px 0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+            margin: 10px;
+            font-weight: 500;
+        }
+
+        .download-btn {
+            padding: 12px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+        }
+
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Log Dashboard</h1>
-    <p><strong>Total Logs:</strong> 76,591</p>
-    <p><strong>Success:</strong> 66,797 | <strong>Failure:</strong> 3,618 | <strong>Error:</strong> 3</p>
-    <button class="download-btn" onclick="downloadHTML()">Download Dashboard</button>
-    <canvas id="statusChart"></canvas>
-    <canvas id="actionChart"></canvas>
-    
+    <div class="container">
+        <h1>📊 Log Dashboard</h1>
+        <div class="stats">
+            <div class="stat-box"><strong>Total Logs:</strong> 76,591</div>
+            <div class="stat-box"><strong>✅ Success:</strong> 66,797</div>
+            <div class="stat-box"><strong>❌ Failure:</strong> 3,618</div>
+            <div class="stat-box"><strong>⚠️ Error:</strong> 3</div>
+        </div>
+        <!-- <button class="download-btn" onclick="downloadHTML()">⬇ Download Dashboard</button> -->
+        <canvas id="statusChart"></canvas>
+        <canvas id="actionChart"></canvas>
+    </div>
+
     <script>
         function downloadHTML() {
             var element = document.createElement('a');
@@ -28,31 +100,49 @@
             element.click();
             document.body.removeChild(element);
         }
-        
+
         const statusData = {
             labels: ["Success", "Failure", "Error"],
             datasets: [{
                 data: [66797, 3618, 3],
-                backgroundColor: ["#28a745", "#dc3545", "#ffc107"]
+                backgroundColor: ["#28a745", "#dc3545", "#ffc107"],
+                hoverOffset: 10,
             }]
         };
-        
+
         const actionData = {
-            labels: ["Phone Verification", "Download DRS Statement", "Selecting DRS Statement", "PDF Verification", "Success", "Failure", "KYC Page", "Login", "Dashboard Navigation", "Generate DRS Statement Date Selection", "Generate DRS Statement", "Login Step", "Status"],
+            labels: ["Phone Verification", "Download DRS", "Selecting DRS", "PDF Verification", "Success", "Failure", "KYC Page", "Login", "Dashboard Navigation", "Generate DRS Date", "Generate DRS", "Login Step", "Status"],
             datasets: [{
                 data: [29118, 17212, 11676, 11452, 5679, 494, 403, 262, 131, 72, 60, 29, 3],
-                backgroundColor: ["#007bff", "#6610f2", "#17a2b8", "#ff5733", "#ffbd33", "#33ff57", "#5733ff", "#33bdff", "#ff33bd", "#b8ff33", "#33ffbd", "#ff3380", "#80ff33"]
+                backgroundColor: ["#007bff", "#6610f2", "#17a2b8", "#ff5733", "#ffbd33", "#33ff57", "#5733ff", "#33bdff", "#ff33bd", "#b8ff33", "#33ffbd", "#ff3380", "#80ff33"],
+                hoverOffset: 10,
             }]
         };
-        
+
         new Chart(document.getElementById("statusChart"), {
             type: "pie",
-            data: statusData
+            data: statusData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: "white", font: { size: 14 } }
+                    }
+                }
+            }
         });
-        
+
         new Chart(document.getElementById("actionChart"), {
             type: "doughnut",
-            data: actionData
+            data: actionData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: "white", font: { size: 14 } }
+                    }
+                }
+            }
         });
     </script>
 </body>
